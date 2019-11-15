@@ -1,0 +1,29 @@
+Class documentation
+<---- javadoc command: ---->
+C:\BlueJ\jdk\bin\javadoc.exe
+-author
+-version
+-nodeprecated
+-package
+-Xdoclint:none
+-noindex
+-notree
+-nohelp
+-nonavbar
+-source
+11
+-classpath
+C:\BlueJ\lib\bluejcore.jar;C:\BlueJ\lib\junit-4.11.jar;C:\BlueJ\lib\hamcrest-core-1.3.jar;C:\BlueJ\lib\lang-stride.jar;C:\BlueJ\lib\javafx\lib\javafx.base.jar;C:\BlueJ\lib\javafx\lib\javafx.controls.jar;C:\BlueJ\lib\javafx\lib\javafx.fxml.jar;C:\BlueJ\lib\javafx\lib\javafx.graphics.jar;C:\BlueJ\lib\javafx\lib\javafx.media.jar;C:\BlueJ\lib\javafx\lib\javafx.properties.jar;C:\BlueJ\lib\javafx\lib\javafx.swing.jar;C:\BlueJ\lib\javafx\lib\javafx.web.jar;C:\Users\Andrey\OneDrive\Практика\2
+-d
+C:\Users\Andrey\OneDrive\Практика\2\doc
+-encoding
+UTF-8
+-charset
+UTF-8
+C:\Users\Andrey\OneDrive\Практика\2\SportsmanJournalDemo.java
+<---- end of javadoc command ---->
+Loading source file C:\Users\Andrey\OneDrive\Практика\2\SportsmanJournalDemo.java...
+C:\Users\Andrey\OneDrive\Практика\2\SportsmanJournalDemo.java:34: error: ';' expected
+        System.out.println("Всего спортсменов:" + j)
+                                                    ^
+1 error
