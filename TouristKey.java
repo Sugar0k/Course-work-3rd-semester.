@@ -17,9 +17,11 @@ public class TouristKey implements Comparable<TouristKey> {
 
     public void setId(int id) {this.id = id;}
     public void setTeamCode(String name) {this.name = name;}
-    
+    public void setCost(int cost) {this.cost = cost;}
+
     public int getId() {return id;}
     public String getTeamCode() {return name;}
+    public int getCost() {return cost;}
     
     public String toString(){
         return String.format(TKEY_FORMAT_STRING, id, name, cost);

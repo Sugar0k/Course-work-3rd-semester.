@@ -85,31 +85,63 @@ public class GUI extends JFrame
         this.setJMenuBar(menuBar);
         this.revalidate();
 
-        JMenuItem standartsort = sort.add(new JMenuItem("Стандартная")); 
+        JMenuItem scoresort = sort.add(new JMenuItem("Убывание стоимости")); 
         
-        standartsort.addActionListener(new ActionListener() {    
+        scoresort.addActionListener(new ActionListener() {    
             @Override
             public void actionPerformed(ActionEvent e) {
-            try {
-                    String array[] = new String[0];
-                int a = -1;
-                for ( int n = 0;n<tableModel.getRowCount(); n++) { 
-                    StringBuilder sb = new StringBuilder(); 
-                    for (int _n=1;_n<tableModel.getColumnCount();_n++) { 
-                        Object data = tableModel.getValueAt(n,_n); 
-                        if (data == "") sb.append("0");
-                        if (a == 3) {
-                            turJornal.addTourist(new TouristKey(Integer.parseInt(array[0]),array[1], Integer.parseInt(array[2])),Integer.parseInt(array[2]));
-                            a = -1;
-                        }
-                        a++;
-                        array[a] = data.toString();
-                    } 
-                    }
-            } finally {
-            }
-            }
+                
+                    tableModel.setRowCount(0);
+                    array = turJornal.sortScoreDesc().putTouristJournal();
+                    for (int i = 0; i < array.length; i++)
+                        tableModel.addRow(array[i]);
+                    
+                    table1 = new JTable(tableModel);
+                    table1.setAutoCreateRowSorter(true);
+                    Box contents = new Box(BoxLayout.Y_AXIS);
+                    contents.add(new JScrollPane(table1));
+                    getContentPane().add(contents);
+                }         
             });
+        
+        JMenuItem drugayasort = sort.add(new JMenuItem("Cортировка по возрастанию страны")); 
+            
+        drugayasort.addActionListener(new ActionListener() {    
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    
+                        tableModel.setRowCount(0);
+                        array = turJornal.sortIdAscTeamCodeDesc().putTouristJournal();
+                        for (int i = 0; i < array.length; i++)
+                            tableModel.addRow(array[i]);
+                        
+                        table1 = new JTable(tableModel);
+                        table1.setAutoCreateRowSorter(true);
+                        Box contents = new Box(BoxLayout.Y_AXIS);
+                        contents.add(new JScrollPane(table1));
+                        getContentPane().add(contents);
+                    }         
+                });
+                
+        JMenuItem echedrugayasort = sort.add(new JMenuItem("Cортировка по убыванию шифра страны -_-")); 
+            
+        echedrugayasort.addActionListener(new ActionListener() {    
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    
+                        tableModel.setRowCount(0);
+                        array = turJornal.sortTeamAscMonthDesc().putTouristJournal();
+                        array = turJornal.sortTeamAscMonthDesc().putTouristJournal();
+                        for (int i = 0; i < array.length; i++)
+                            tableModel.addRow(array[i]);
+                        
+                        table1 = new JTable(tableModel);
+                        table1.setAutoCreateRowSorter(true);
+                        Box contents = new Box(BoxLayout.Y_AXIS);
+                        contents.add(new JScrollPane(table1));
+                        getContentPane().add(contents);
+                    }         
+                });
 
         
 
@@ -228,7 +260,7 @@ public class GUI extends JFrame
         getContentPane().add(buttons); 
         getContentPane().add(statusLabel);
 
-        setSize(500, 400);
+        setSize(1000, 500);
         this.setVisible(true);  //Программа видна
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);  //Кнопка выхода из программы (X)
 

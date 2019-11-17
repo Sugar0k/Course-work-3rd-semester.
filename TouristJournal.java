@@ -117,14 +117,14 @@ public class TouristJournal {
     }
 
     public TouristJournal sortIdAscTeamCodeDesc(){
-        TouristJournal subSpoJou = new TouristJournal(String.format("%s:\n\t сортировка по возрастанию шифра и убыванию названия страны", name), new CompIdAscTeamCodeDesc());
+        TouristJournal subSpoJou = new TouristJournal(String.format("%s:\n\t сортировка по возрастанию страны и убыванию названия страны", name), new CompIdAscTeamCodeDesc());
         Set<Map.Entry<TouristKey, Integer>> setS = journal.entrySet();
         for(Map.Entry<TouristKey, Integer> keyVal: setS)
             subSpoJou.addTourist(keyVal.getKey(), keyVal.getValue());
         return subSpoJou;
     }
 
-    public TouristJournal sortTeamAscMonthDesc(){
+    public TouristJournal sortTeamAscMonthDesc() {
         TouristJournal subSpoJou = new TouristJournal(String.format("%s:\n\t сортировка по возрастанию названию страны и убыванию стоимости", name), new CompTeamAscMonthDesc());
         Set<Map.Entry<TouristKey, Integer>> setS = journal.entrySet();
         for(Map.Entry<TouristKey, Integer> keyVal: setS)
@@ -141,6 +141,7 @@ public class TouristJournal {
         Object[][] array = new String[journal.size()][4];
         for(Map.Entry<TouristKey, Integer> keyK:setS){
             TouristKey key = keyK.getKey();
+            
             System.out.printf("%-10d%-10d%-19s %s\n", i, key.getId(), key.getTeamCode(),keyK.getValue());
             array[i-1][0] = Integer.toString(i);
             array[i-1][1] = Integer.toString(key.getId());
@@ -154,12 +155,13 @@ public class TouristJournal {
     public String[][] returnTouristJournalarray(){
         Set<Map.Entry<TouristKey, Integer>> setS = journal.entrySet();
         int i = 1;
-        Object[][] array = new String[journal.size()][3];
+        Object[][] array = new String[journal.size()][4];
         for(Map.Entry<TouristKey, Integer> keyK:setS){
             TouristKey key = keyK.getKey();
-            array[i-1][0] = Integer.toString(key.getId());
-            array[i-1][1] = key.getTeamCode();
-            array[i-1][2] = Integer.toString(keyK.getValue());
+            array[i-1][0] = Integer.toString(i);
+            array[i-1][1] = Integer.toString(key.getId());
+            array[i-1][2] = key.getTeamCode();
+            array[i-1][3] = Integer.toString(keyK.getValue());
             i = i+1;
         }
         return (String[][]) array;
