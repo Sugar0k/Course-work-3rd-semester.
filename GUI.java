@@ -30,7 +30,7 @@ public class GUI extends JFrame
     // Заголовки столбцов
     private Object[] columnsHeader = new String[] {"#","Шифр маршрута", "Страна","Стоимость"};
 
-    public GUI (TouristJournal turJornal) 
+    public GUI (TouristJournal turJornal, Set quantity) 
     {
         super("Туристические маршруты");
 
@@ -72,8 +72,7 @@ public class GUI extends JFrame
             });
 
         //this.setBounds(500,500,500,500);
-        this.setLocation(725,300);
-
+        this.setLocation(725,300); 
         JMenuBar menuBar = new JMenuBar();  
         JMenu file = new JMenu("Файл");     //Кнопка в бар меню
         menuBar.add(file);
@@ -84,6 +83,25 @@ public class GUI extends JFrame
         menuBar.add(sort);
         this.setJMenuBar(menuBar);
         this.revalidate();
+        
+        JMenuItem standartSort = sort.add(new JMenuItem("Стандарт")); 
+        
+        standartSort.addActionListener(new ActionListener() {    
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                    tableModel.setRowCount(0);
+                    array = turJornal.putTouristJournal();
+                    for (int i = 0; i < array.length; i++)
+                        tableModel.addRow(array[i]);
+                    
+                    table1 = new JTable(tableModel);
+                    table1.setAutoCreateRowSorter(true);
+                    Box contents = new Box(BoxLayout.Y_AXIS);
+                    contents.add(new JScrollPane(table1));
+                    getContentPane().add(contents);
+                }         
+            });
 
         JMenuItem scoresort = sort.add(new JMenuItem("Убывание стоимости")); 
         
@@ -104,7 +122,7 @@ public class GUI extends JFrame
                 }         
             });
         
-        JMenuItem drugayasort = sort.add(new JMenuItem("Cортировка по возрастанию страны")); 
+        JMenuItem drugayasort = sort.add(new JMenuItem("Убывание названия страны")); 
             
         drugayasort.addActionListener(new ActionListener() {    
                 @Override
@@ -123,14 +141,13 @@ public class GUI extends JFrame
                     }         
                 });
                 
-        JMenuItem echedrugayasort = sort.add(new JMenuItem("Cортировка по убыванию шифра страны -_-")); 
+        JMenuItem echedrugayasort = sort.add(new JMenuItem("Убывание шифра маршрута")); 
             
         echedrugayasort.addActionListener(new ActionListener() {    
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     
                         tableModel.setRowCount(0);
-                        array = turJornal.sortTeamAscMonthDesc().putTouristJournal();
                         array = turJornal.sortTeamAscMonthDesc().putTouristJournal();
                         for (int i = 0; i < array.length; i++)
                             tableModel.addRow(array[i]);
@@ -149,6 +166,7 @@ public class GUI extends JFrame
         open.addActionListener(new ActionListener() {       //Действие открытия
 			@Override
         public void actionPerformed(ActionEvent e) {
+            
             TouristJournal turJornal = new TouristJournal("Файл");
             BufferedReader inp = null;
             String[] data = new String[0];
@@ -238,7 +256,8 @@ public class GUI extends JFrame
         frame.add(statusPanel, BorderLayout.SOUTH);
         statusPanel.setPreferredSize(new Dimension(frame.getWidth(), 16));
         statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
-        JLabel statusLabel = new JLabel("Общее количество стран: ");
+        String countries =  "Всего маршрутов: " + Integer.toString(turJornal.size())  + " | " + Integer.toString(quantity.size());
+        JLabel statusLabel = new JLabel(countries);
         statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
         
 
@@ -272,6 +291,7 @@ public class GUI extends JFrame
         TouristJournal turJornal = new TouristJournal("Журнал путевок #1");
         BufferedReader inp = null;
         String[] data = new String[0];
+        Set<String> quantity = new TreeSet<String>();
         String line;
         try{
             inp = new BufferedReader(new FileReader("input.txt"));
@@ -280,11 +300,12 @@ public class GUI extends JFrame
                 if(line.equals("")) continue;
                 data = line.split("\\s+");
                 turJornal.addTourist(new TouristKey(Integer.parseInt(data[0]),data[1], Integer.parseInt(data[2])),Integer.parseInt(data[2]));
+                quantity.add(data[1]);
             }
         } catch (Exception e){
             System.out.println(e);
         }
 
-        GUI start = new GUI(turJornal);
+        GUI start = new GUI(turJornal,quantity);
     }
 }
