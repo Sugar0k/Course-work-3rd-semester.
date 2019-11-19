@@ -56,6 +56,21 @@ public class TouristJournal {
         return true;
     }
 
+    public boolean deleteAllT(){
+        Set<Map.Entry<TouristKey, Integer>> setS = journal.entrySet();
+        Iterator<Map.Entry<TouristKey, Integer>> it = setS.iterator();
+        int i = 0;
+        while(it.hasNext()){
+            Map.Entry<TouristKey, Integer> keyVal = it.next();
+            if(keyVal.getKey().getId() > 0){
+                it.remove();
+                i = i + 1;
+            }
+        }
+        if(i == 0) return false;
+        return true;
+    }
+
      public boolean delSmallerTourist(int id){
         Set<Map.Entry<TouristKey, Integer>> setS = journal.entrySet();
         Iterator<Map.Entry<TouristKey, Integer>> it = setS.iterator();

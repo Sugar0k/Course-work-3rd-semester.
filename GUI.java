@@ -96,7 +96,6 @@ public class GUI extends JFrame
                         tableModel.addRow(array[i]);
                     
                     table1 = new JTable(tableModel);
-                    table1.setAutoCreateRowSorter(true);
                     Box contents = new Box(BoxLayout.Y_AXIS);
                     contents.add(new JScrollPane(table1));
                     getContentPane().add(contents);
@@ -180,7 +179,7 @@ public class GUI extends JFrame
                 if (data[0] == " "){data[0] = "0";}
                 if (data[1] == " "){data[0] = "0";}
                 if (data[2] == " "){data[0] = "0";}
-                turJornal.addTourist(new TouristKey(Integer.parseInt(data[0]),data[1], Integer.parseInt(data[2])),Integer.parseInt(data[2]));
+                turJornal.addTourist(new TouristKey(Integer.parseInt(data[3]),data[1], Integer.parseInt(data[2])),Integer.parseInt(data[2]));
                 
             }
         } catch (IOException exception) {
@@ -237,6 +236,43 @@ public class GUI extends JFrame
         }
         });
 
+        file.addSeparator();    //Разделитель
+        JMenuItem update = file.add(new JMenuItem("Оновлення")); 
+        
+        update.addActionListener(new ActionListener() {    
+            @Override
+        public void actionPerformed(ActionEvent e) {
+
+            String [][] array = new String [tableModel.getRowCount()][tableModel.getColumnCount()];
+            turJornal.deleteAllT();
+            for ( int n = 0;n<tableModel.getRowCount(); n++) { // тут хр. массив [][] из которого берем данныt 
+                for (int _n=0;_n<tableModel.getColumnCount();_n++) { 
+                    Object data = tableModel.getValueAt(n,_n); 
+                    if (data == "") array[n][_n] = ("0"); 
+                    array[n][_n] = (data.toString());
+                } 
+                turJornal.addTourist(new TouristKey(Integer.parseInt(array[n][1]), array[n][2].toString(), Integer.parseInt(array[n][3])),Integer.parseInt(array[n][3]));
+                }/*
+                tableModel.setRowCount(0);
+                for (int i = 0; i < array.length; i++)
+                tableModel.addRow(array[i]);
+                table1 = new JTable(tableModel);
+                Box contents = new Box(BoxLayout.Y_AXIS);
+                contents.add(new JScrollPane(table1));
+                getContentPane().add(contents);
+                */
+                tableModel.setRowCount(0);
+                    array = turJornal.putTouristJournal();
+                    for (int i = 0; i < array.length; i++)
+                        tableModel.addRow(array[i]);
+                    
+                    table1 = new JTable(tableModel);
+                    Box contents = new Box(BoxLayout.Y_AXIS);
+                    contents.add(new JScrollPane(table1));
+                    getContentPane().add(contents);
+
+            }
+        });
         
 
         file.addSeparator();    //Разделитель
@@ -248,7 +284,7 @@ public class GUI extends JFrame
         System.exit(0);     //Выход из программы
         }
         });
-
+        
         JFrame frame = new JFrame();
         frame.setLayout(new BorderLayout());
         JPanel statusPanel = new JPanel();
@@ -258,8 +294,8 @@ public class GUI extends JFrame
         statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
         String countries =  "Всего маршрутов: " + Integer.toString(turJornal.size())  + " | " + Integer.toString(quantity.size());
         JLabel statusLabel = new JLabel(countries);
-        statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        
+        statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
+       
 
         // Размещение таблиц в панели с блочным расположением
         Box contents = new Box(BoxLayout.Y_AXIS);
@@ -288,7 +324,7 @@ public class GUI extends JFrame
 
     public static void main(String[] args){
 
-        TouristJournal turJornal = new TouristJournal("Журнал путевок #1");
+        TouristJournal turJornal = new TouristJournal("Журнал путевок");
         BufferedReader inp = null;
         String[] data = new String[0];
         Set<String> quantity = new TreeSet<String>();
