@@ -56,6 +56,17 @@ public class TouristJournal {
         return true;
     }
 
+    public int quantityItem(){
+        Set<Map.Entry<TouristKey, Integer>> setS = journal.entrySet();
+        Iterator<Map.Entry<TouristKey, Integer>> it = setS.iterator();
+        Set<String> quantity = new TreeSet<String>();
+        while(it.hasNext()){
+            Map.Entry<TouristKey, Integer> keyVal = it.next();
+            quantity.add(keyVal.getKey().getTeamCode());
+        }
+        return (quantity.size());
+    }
+
     public boolean deleteAllT(){
         Set<Map.Entry<TouristKey, Integer>> setS = journal.entrySet();
         Iterator<Map.Entry<TouristKey, Integer>> it = setS.iterator();

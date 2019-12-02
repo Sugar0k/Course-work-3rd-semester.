@@ -1,20 +1,13 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.security.Guard;
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.Vector;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.PrintWriter;
 import java.io.Writer;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.BufferedWriter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
@@ -29,8 +22,9 @@ public class GUI extends JFrame
     Object[][] array = new String[0][0];
     // Заголовки столбцов
     private Object[] columnsHeader = new String[] {"#","Шифр маршрута", "Страна","Стоимость"};
-
-    public GUI (TouristJournal turJornal, Set quantity) 
+    
+    
+    public GUI (TouristJournal turJornal) 
     {
         super("Туристические маршруты");
 
@@ -79,11 +73,13 @@ public class GUI extends JFrame
         this.setJMenuBar(menuBar);
         this.revalidate();
 
-        JMenu sort = new JMenu("Сортировка");     //Кнопка в бар меню
-        menuBar.add(sort);
+        JMenu table = new JMenu("Таблица");     //Кнопка в бар меню
+        menuBar.add(table);
         this.setJMenuBar(menuBar);
         this.revalidate();
         
+        JMenu sort = new JMenu("Сортировка");
+
         JMenuItem standartSort = sort.add(new JMenuItem("Стандарт")); 
         
         standartSort.addActionListener(new ActionListener() {    
@@ -159,7 +155,7 @@ public class GUI extends JFrame
                     }         
                 });
 
-        
+        table.add(sort);
 
         JMenuItem open = file.add(new JMenuItem("Открыть"));
         open.addActionListener(new ActionListener() {       //Действие открытия
@@ -236,8 +232,7 @@ public class GUI extends JFrame
         }
         });
 
-        file.addSeparator();    //Разделитель
-        JMenuItem update = file.add(new JMenuItem("Оновлення")); 
+        JMenuItem update = file.add(new JMenuItem("Обновление")); 
         
         update.addActionListener(new ActionListener() {    
             @Override
@@ -245,22 +240,14 @@ public class GUI extends JFrame
 
             String [][] array = new String [tableModel.getRowCount()][tableModel.getColumnCount()];
             turJornal.deleteAllT();
-            for ( int n = 0;n<tableModel.getRowCount(); n++) { // тут хр. массив [][] из которого берем данныt 
+            for ( int n = 0;n<tableModel.getRowCount(); n++) { // тут хр. массив [][] из которого берем данны t 
                 for (int _n=0;_n<tableModel.getColumnCount();_n++) { 
                     Object data = tableModel.getValueAt(n,_n); 
                     if (data == "") array[n][_n] = ("0"); 
                     array[n][_n] = (data.toString());
                 } 
                 turJornal.addTourist(new TouristKey(Integer.parseInt(array[n][1]), array[n][2].toString(), Integer.parseInt(array[n][3])),Integer.parseInt(array[n][3]));
-                }/*
-                tableModel.setRowCount(0);
-                for (int i = 0; i < array.length; i++)
-                tableModel.addRow(array[i]);
-                table1 = new JTable(tableModel);
-                Box contents = new Box(BoxLayout.Y_AXIS);
-                contents.add(new JScrollPane(table1));
-                getContentPane().add(contents);
-                */
+                }
                 tableModel.setRowCount(0);
                     array = turJornal.putTouristJournal();
                     for (int i = 0; i < array.length; i++)
@@ -270,10 +257,11 @@ public class GUI extends JFrame
                     Box contents = new Box(BoxLayout.Y_AXIS);
                     contents.add(new JScrollPane(table1));
                     getContentPane().add(contents);
-
+                
             }
         });
         
+        table.add(update);
 
         file.addSeparator();    //Разделитель
         JMenuItem exit = file.add(new JMenuItem("Выйти"));  //Кнопка выхода
@@ -292,7 +280,7 @@ public class GUI extends JFrame
         frame.add(statusPanel, BorderLayout.SOUTH);
         statusPanel.setPreferredSize(new Dimension(frame.getWidth(), 16));
         statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
-        String countries =  "Всего маршрутов: " + Integer.toString(turJornal.size())  + " | " + Integer.toString(quantity.size());
+        String countries =  "Всего маршрутов: " + Integer.toString(turJornal.size())  + " | " + Integer.toString(turJornal.quantityItem());
         JLabel statusLabel = new JLabel(countries);
         statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
        
@@ -327,7 +315,6 @@ public class GUI extends JFrame
         TouristJournal turJornal = new TouristJournal("Журнал путевок");
         BufferedReader inp = null;
         String[] data = new String[0];
-        Set<String> quantity = new TreeSet<String>();
         String line;
         try{
             inp = new BufferedReader(new FileReader("input.txt"));
@@ -336,12 +323,11 @@ public class GUI extends JFrame
                 if(line.equals("")) continue;
                 data = line.split("\\s+");
                 turJornal.addTourist(new TouristKey(Integer.parseInt(data[0]),data[1], Integer.parseInt(data[2])),Integer.parseInt(data[2]));
-                quantity.add(data[1]);
             }
         } catch (Exception e){
             System.out.println(e);
         }
 
-        GUI start = new GUI(turJornal,quantity);
+        GUI start = new GUI(turJornal);
     }
 }
