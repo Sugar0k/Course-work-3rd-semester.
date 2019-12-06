@@ -21,13 +21,10 @@ public class Demo {
     public static void main(String[] args){
         System.out.println("Скопируем данные из файла input.txt в словарь Журнал путевок #1");
         TouristJournal sportsmanJournal = new TouristJournal("Журнал путевок #1");
-        int j = 0;
         String line;
         BufferedReader inp = null;
         String[] data = new String[5];
         Set<String> quantity = new TreeSet<String>();
-        int i = 0;
-        int t = 0;
         try{
             inp = new BufferedReader(new FileReader("input.txt"));
             while ((line = inp.readLine()) != null){
