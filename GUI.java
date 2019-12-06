@@ -168,7 +168,8 @@ public class GUI extends JFrame {
                 String line;
                 try {
                     new FileOutputStream(fd.getDirectory());
-                    inp = new BufferedReader(new FileReader(fd.getDirectory()));
+                    //inp = new BufferedReader(new FileReader(fd.getDirectory()));
+                    inp = new BufferedReader(new FileReader(String.format("%s%s", fd.getDirectory(), fd.getFile())));
                     while ((line = inp.readLine()) != null) {
                         line = line.trim();
                         if (line.equals(""))
